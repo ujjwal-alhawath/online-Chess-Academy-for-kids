@@ -162,3 +162,4 @@ const gameSchema = new Schema<IGame>(
 gameSchema.index({ createdAt: -1 });
 
 export const Game: Model<IGame> = model<IGame>('Game', gameSchema);
+

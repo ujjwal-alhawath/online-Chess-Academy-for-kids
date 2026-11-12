@@ -89,3 +89,4 @@ const puzzleSchema = new Schema<IPuzzle>(
 );
 
 export const Puzzle: Model<IPuzzle> = model<IPuzzle>('Puzzle', puzzleSchema);
+

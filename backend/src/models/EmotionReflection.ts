@@ -108,3 +108,4 @@ emotionReflectionSchema.index({ studentId: 1, createdAt: -1 });
 
 export const EmotionReflection: Model<IEmotionReflection> =
   model<IEmotionReflection>('EmotionReflection', emotionReflectionSchema);
+

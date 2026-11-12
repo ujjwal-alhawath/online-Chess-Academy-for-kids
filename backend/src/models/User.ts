@@ -60,3 +60,4 @@ const userSchema = new Schema<IUser>(
 );
 
 export const User: Model<IUser> = model<IUser>('User', userSchema);
+

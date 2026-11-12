@@ -62,3 +62,4 @@ export const TournamentParticipant: Model<ITournamentParticipant> =
     'TournamentParticipant',
     tournamentParticipantSchema
   );
+

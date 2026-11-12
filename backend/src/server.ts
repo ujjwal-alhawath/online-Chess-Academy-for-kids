@@ -1,10 +1,14 @@
 import express from 'express';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import { config } from './config/env';
 import { connectDatabase, disconnectDatabase } from './config/database';
 import { healthRoutes } from './routes/health.routes';
+import { authRoutes } from './routes/auth.routes';
 import { notFoundHandler } from './middleware/notFoundHandler';
 import { errorHandler } from './middleware/errorHandler';
+import { requireAuth } from './middleware/auth.middleware';
+import { requireRole } from './middleware/role.middleware';
 
 const app = express();
 
@@ -15,6 +19,7 @@ app.use(
     credentials: true,
   })
 );
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -28,6 +33,34 @@ if (config.nodeEnv === 'development') {
 
 // Routes
 app.use('/api/health', healthRoutes);
+app.use('/api/auth', authRoutes);
+
+// Protected Test Endpoints for Role RBAC Verification
+app.get(
+  '/api/test-protected/teacher-only',
+  requireAuth,
+  requireRole('TEACHER'),
+  (req, res) => {
+    res.json({
+      success: true,
+      message: 'Access granted to Teacher area.',
+      user: req.user,
+    });
+  }
+);
+
+app.get(
+  '/api/test-protected/admin-only',
+  requireAuth,
+  requireRole('ADMIN'),
+  (req, res) => {
+    res.json({
+      success: true,
+      message: 'Access granted to Admin area.',
+      user: req.user,
+    });
+  }
+);
 
 // 404 Handler for undefined routes
 app.use(notFoundHandler);
@@ -73,4 +106,3 @@ if (require.main === module) {
 }
 
 export default app;
-

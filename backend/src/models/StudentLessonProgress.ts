@@ -56,3 +56,4 @@ export const StudentLessonProgress: Model<IStudentLessonProgress> =
     'StudentLessonProgress',
     studentLessonProgressSchema
   );
+

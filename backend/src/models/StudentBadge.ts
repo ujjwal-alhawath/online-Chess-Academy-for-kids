@@ -39,3 +39,4 @@ export const StudentBadge: Model<IStudentBadge> = model<IStudentBadge>(
   'StudentBadge',
   studentBadgeSchema
 );
+

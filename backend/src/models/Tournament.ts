@@ -79,3 +79,4 @@ export const Tournament: Model<ITournament> = model<ITournament>(
   'Tournament',
   tournamentSchema
 );
+

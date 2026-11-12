@@ -121,3 +121,4 @@ export const StudentProfile: Model<IStudentProfile> = model<IStudentProfile>(
   'StudentProfile',
   studentProfileSchema
 );
+

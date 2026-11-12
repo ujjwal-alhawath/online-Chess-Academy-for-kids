@@ -74,3 +74,4 @@ export const TournamentMatch: Model<ITournamentMatch> = model<ITournamentMatch>(
   'TournamentMatch',
   tournamentMatchSchema
 );
+

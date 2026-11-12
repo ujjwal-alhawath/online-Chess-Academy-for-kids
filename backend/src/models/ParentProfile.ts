@@ -61,3 +61,4 @@ export const ParentProfile: Model<IParentProfile> = model<IParentProfile>(
   'ParentProfile',
   parentProfileSchema
 );
+

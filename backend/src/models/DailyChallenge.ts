@@ -65,3 +65,4 @@ export const DailyChallenge: Model<IDailyChallenge> = model<IDailyChallenge>(
   'DailyChallenge',
   dailyChallengeSchema
 );
+

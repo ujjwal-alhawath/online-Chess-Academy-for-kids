@@ -60,3 +60,4 @@ const badgeSchema = new Schema<IBadge>(
 );
 
 export const Badge: Model<IBadge> = model<IBadge>('Badge', badgeSchema);
+

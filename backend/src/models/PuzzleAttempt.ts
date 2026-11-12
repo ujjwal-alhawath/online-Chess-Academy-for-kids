@@ -57,3 +57,4 @@ export const PuzzleAttempt: Model<IPuzzleAttempt> = model<IPuzzleAttempt>(
   'PuzzleAttempt',
   puzzleAttemptSchema
 );
+
