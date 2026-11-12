@@ -40,6 +40,7 @@ export class AuthController {
         message: 'Logged in successfully',
         user,
         profile,
+        token,
       });
     } catch (error) {
       next(error);

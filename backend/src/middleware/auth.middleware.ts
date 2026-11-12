@@ -15,6 +15,14 @@ export async function requireAuth(
   try {
     let token: string | undefined = req.cookies?.[config.cookieName];
 
+    // Fallback: manually parse cookie header if cookieParser was bypassed or on proxy
+    if (!token && req.headers.cookie) {
+      const match = req.headers.cookie.match(new RegExp(`(?:^|; )${config.cookieName}=([^;]*)`));
+      if (match) {
+        token = decodeURIComponent(match[1]);
+      }
+    }
+
     // Fallback: Authorization header (useful for programmatic API consumers/testing)
     if (!token && req.headers.authorization?.startsWith('Bearer ')) {
       token = req.headers.authorization.split(' ')[1];

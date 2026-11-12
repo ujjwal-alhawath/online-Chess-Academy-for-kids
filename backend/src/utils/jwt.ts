@@ -31,25 +31,38 @@ export function generateParentLinkCode(): string {
 
 /**
  * Return secure HTTP-only cookie options.
+ * Configured for cross-site (SameSite=None; Secure; Partitioned) on Vercel/Production.
  */
 export function getAuthCookieOptions(): CookieOptions {
+  const isProd =
+    config.nodeEnv === 'production' ||
+    Boolean(process.env.VERCEL) ||
+    Boolean(process.env.VERCEL_ENV);
+
   return {
     httpOnly: true,
-    secure: config.nodeEnv === 'production',
-    sameSite: config.nodeEnv === 'production' ? 'none' : 'lax',
+    secure: isProd,
+    sameSite: isProd ? 'none' : 'lax',
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds
     path: '/',
-  };
+    ...(isProd ? { partitioned: true } : {}),
+  } as CookieOptions;
 }
 
 /**
  * Return cookie options for clearing authentication session.
  */
 export function getClearCookieOptions(): CookieOptions {
+  const isProd =
+    config.nodeEnv === 'production' ||
+    Boolean(process.env.VERCEL) ||
+    Boolean(process.env.VERCEL_ENV);
+
   return {
     httpOnly: true,
-    secure: config.nodeEnv === 'production',
-    sameSite: config.nodeEnv === 'production' ? 'none' : 'lax',
+    secure: isProd,
+    sameSite: isProd ? 'none' : 'lax',
     path: '/',
-  };
+    ...(isProd ? { partitioned: true } : {}),
+  } as CookieOptions;
 }

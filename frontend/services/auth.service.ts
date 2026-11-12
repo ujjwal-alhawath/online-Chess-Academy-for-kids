@@ -42,6 +42,7 @@ export type RoleProfile =
 export interface AuthResponse {
   success: boolean;
   message?: string;
+  token?: string;
   user?: UserSummary;
   profile?: RoleProfile;
   linkedStudent?: {

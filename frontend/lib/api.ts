@@ -1,5 +1,26 @@
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
+let memoryToken: string | null = null;
+
+export function setAuthToken(token: string | null): void {
+  memoryToken = token;
+  if (typeof window !== 'undefined') {
+    if (token) {
+      sessionStorage.setItem('chess_auth_token', token);
+    } else {
+      sessionStorage.removeItem('chess_auth_token');
+    }
+  }
+}
+
+export function getAuthToken(): string | null {
+  if (memoryToken) return memoryToken;
+  if (typeof window !== 'undefined') {
+    return sessionStorage.getItem('chess_auth_token');
+  }
+  return null;
+}
+
 export interface ApiResponse<T = unknown> {
   success: boolean;
   message?: string;
@@ -9,6 +30,7 @@ export interface ApiResponse<T = unknown> {
 
 /**
  * Custom fetch wrapper that automatically includes HTTP-only cookies and standard headers.
+ * Supports Bearer Authorization fallback for environments blocking cross-site cookies.
  */
 export async function apiClient<T = unknown>(
   endpoint: string,
@@ -16,8 +38,10 @@ export async function apiClient<T = unknown>(
 ): Promise<T> {
   const url = `${API_BASE_URL}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
 
+  const token = getAuthToken();
   const defaultHeaders: HeadersInit = {
     'Content-Type': 'application/json',
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
   };
 
   const response = await fetch(url, {

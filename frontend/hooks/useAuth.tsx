@@ -9,6 +9,7 @@ import {
   RegisterPayload,
   AuthResponse,
 } from '../services/auth.service';
+import { setAuthToken } from '../lib/api';
 
 interface AuthContextType {
   user: UserSummary | null;
@@ -53,6 +54,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = async (payload: LoginPayload) => {
     const res = await AuthService.login(payload);
+    if (res.token) {
+      setAuthToken(res.token);
+    }
     if (res.success && res.user) {
       setUser(res.user);
       setProfile(res.profile || null);
@@ -61,6 +65,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const register = async (payload: RegisterPayload) => {
     const res = await AuthService.register(payload);
+    if (res.token) {
+      setAuthToken(res.token);
+    }
     if (res.success && res.user) {
       setUser(res.user);
       setProfile(res.profile || null);
@@ -68,6 +75,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const logout = async () => {
+    setAuthToken(null);
     await AuthService.logout();
     setUser(null);
     setProfile(null);
