@@ -12,10 +12,12 @@
     "db:verify": "tsx src/scripts/verifyDb.ts",
     "db:seed": "tsx src/scripts/seed.ts",
     "auth:verify": "tsx src/scripts/verifyAuth.ts",
-    "p4:verify": "tsx src/scripts/verifyPhase4.ts"
+    "p4:verify": "tsx src/scripts/verifyPhase4.ts",
+    "p5:verify": "tsx src/scripts/verifyPhase5.ts"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "chess.js": "^1.4.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",

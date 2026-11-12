@@ -10,11 +10,13 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "chess.js": "^1.4.0",
     "clsx": "^2.1.1",
     "lucide-react": "^0.469.0",
     "next": "14.2.23",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "stockfish.js": "^10.0.2",
     "tailwind-merge": "^2.6.0"
   },
   "devDependencies": {
@@ -29,4 +31,3 @@
     "typescript": "^5.7.3"
   }
 }
-

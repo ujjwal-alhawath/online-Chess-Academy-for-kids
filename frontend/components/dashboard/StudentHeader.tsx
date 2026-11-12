@@ -1,5 +1,5 @@
 import React from 'react';
-import { Crown, Sparkles, BookOpen, Target } from 'lucide-react';
+import { Crown, Sparkles, BookOpen, Swords } from 'lucide-react';
 import Link from 'next/link';
 
 interface StudentHeaderProps {
@@ -69,18 +69,18 @@ export const StudentHeader: React.FC<StudentHeaderProps> = ({
         {/* Right: Quick Launch actions */}
         <div className="flex flex-wrap sm:flex-nowrap items-center gap-3 self-stretch md:self-auto justify-end">
           <Link
-            href="#learning-path"
+            href="/play"
             className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-sm px-5 py-3 rounded-2xl shadow-lg shadow-amber-500/25 transition-all hover:scale-[1.02] active:scale-[0.98]"
           >
-            <BookOpen className="w-4 h-4" />
-            <span>Continue Lessons</span>
+            <Swords className="w-4 h-4" />
+            <span>Play Match</span>
           </Link>
           <Link
-            href="#daily-challenge"
+            href="#learning-path"
             className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 bg-white/15 hover:bg-white/25 text-white font-extrabold text-sm px-5 py-3 rounded-2xl border border-white/30 backdrop-blur-md transition-all hover:scale-[1.02] active:scale-[0.98]"
           >
-            <Target className="w-4 h-4" />
-            <span>Daily Quest</span>
+            <BookOpen className="w-4 h-4" />
+            <span>Lessons</span>
           </Link>
         </div>
       </div>

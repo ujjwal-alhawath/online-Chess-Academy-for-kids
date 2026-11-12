@@ -17,6 +17,7 @@ export interface IGameMove {
   to: string;
   piece: string;
   san: string;
+  promotion?: string;
   timeRemaining?: number;
 }
 
@@ -53,6 +54,7 @@ const gameMoveSchema = new Schema<IGameMove>(
     to: { type: String, required: true },
     piece: { type: String, required: true },
     san: { type: String, required: true },
+    promotion: { type: String },
     timeRemaining: { type: Number },
   },
   { _id: false }

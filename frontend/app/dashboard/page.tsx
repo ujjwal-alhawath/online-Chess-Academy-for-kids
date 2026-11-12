@@ -161,6 +161,21 @@ export default function StudentDashboardPage() {
           </Link>
 
           <div className="flex items-center gap-3 sm:gap-4">
+            <Link
+              href="/play"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-black bg-amber-400 hover:bg-amber-300 text-slate-950 shadow-xs transition-colors"
+            >
+              <Swords className="w-3.5 h-3.5" />
+              <span>Play Chess</span>
+            </Link>
+
+            <Link
+              href="/games"
+              className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 border border-slate-200 transition-colors"
+            >
+              <span>History</span>
+            </Link>
+
             <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 text-slate-700 text-xs font-bold border border-slate-200/60">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               <span>{user.role}</span>
