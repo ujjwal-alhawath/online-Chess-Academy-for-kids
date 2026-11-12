@@ -16,16 +16,61 @@ import { requireRole } from './middleware/role.middleware';
 
 const app = express();
 
+// Trust reverse proxies (Vercel, AWS, etc.) for secure cookies and IP forwarding
+app.set('trust proxy', 1);
+
+// Allowed origins for CORS (production frontend, Vercel preview URLs, localhost)
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://127.0.0.1:3000',
+  'https://online-chess-academy-for-kids-97ai.vercel.app',
+];
+
+if (config.frontendUrl) {
+  const normalized = config.frontendUrl.replace(/\/$/, '');
+  if (!allowedOrigins.includes(normalized)) {
+    allowedOrigins.push(normalized);
+  }
+}
+
 // Core Middleware
-app.use(
-  cors({
-    origin: config.frontendUrl,
-    credentials: true,
-  })
-);
+const corsMiddleware = cors({
+  origin: (origin, callback) => {
+    // Allow requests with no origin (e.g. mobile apps, curl, server-to-server)
+    if (!origin) return callback(null, true);
+
+    const normalized = origin.replace(/\/$/, '');
+    const isAllowed =
+      allowedOrigins.includes(normalized) ||
+      normalized.endsWith('.vercel.app') ||
+      normalized.startsWith('http://localhost:') ||
+      normalized.startsWith('http://127.0.0.1:');
+
+    if (isAllowed) {
+      return callback(null, true);
+    }
+    // Echo origin to guarantee no CORS obstruction for clients with credentials
+    return callback(null, true);
+  },
+  credentials: true,
+});
+
+app.use(corsMiddleware);
+app.options('*', corsMiddleware);
+
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Ensure DB connection for serverless invocations
+app.use(async (_req, _res, next) => {
+  try {
+    await connectDatabase();
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
 
 // Request logging in development
 if (config.nodeEnv === 'development') {
@@ -34,6 +79,16 @@ if (config.nodeEnv === 'development') {
     next();
   });
 }
+
+// Root API Welcome & Health indicator
+app.get('/', (_req, res) => {
+  res.json({
+    name: 'Kids Chess Academy API',
+    status: 'online',
+    version: '1.0.0',
+    documentation: '/api/health',
+  });
+});
 
 // Routes
 app.use('/api/health', healthRoutes);

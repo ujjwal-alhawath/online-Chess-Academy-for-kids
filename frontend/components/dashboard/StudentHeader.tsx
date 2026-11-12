@@ -17,6 +17,43 @@ const STRATEGIC_QUOTES = [
   '“A champion never gives up; they analyze, adapt, and improve.”',
 ];
 
+const AVATAR_MAP: Record<string, string> = {
+  knight_blue: '♞',
+  pawn_blue: '♟',
+  bishop_blue: '♝',
+  rook_blue: '♜',
+  queen_blue: '♛',
+  king_gold: '♚',
+  knight: '♞',
+  pawn: '♟',
+  bishop: '♝',
+  rook: '♜',
+  queen: '♛',
+  king: '♚',
+  lion: '🦁',
+  fox: '🦊',
+  bear: '🐻',
+  panda: '🐼',
+  tiger: '🐯',
+  owl: '🦉',
+  unicorn: '🦄',
+};
+
+function getAvatarDisplay(avatar?: string): string {
+  if (!avatar) return '🦁';
+  const key = avatar.toLowerCase().trim();
+  if (AVATAR_MAP[key]) return AVATAR_MAP[key];
+  // If it's already a single/double emoji
+  if (Array.from(avatar).length <= 2) return avatar;
+  if (key.includes('knight')) return '♞';
+  if (key.includes('pawn')) return '♟';
+  if (key.includes('bishop')) return '♝';
+  if (key.includes('rook')) return '♜';
+  if (key.includes('queen')) return '♛';
+  if (key.includes('king')) return '♚';
+  return '🦁';
+}
+
 export const StudentHeader: React.FC<StudentHeaderProps> = ({
   displayName,
   avatar = '🦁',
@@ -35,17 +72,17 @@ export const StudentHeader: React.FC<StudentHeaderProps> = ({
 
       <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
         {/* Left: Avatar + Greeting + Quote */}
-        <div className="flex items-start sm:items-center space-x-4 sm:space-x-5">
-          <div className="relative">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-white/20 backdrop-blur-md border-2 border-white/40 flex items-center justify-center text-3xl sm:text-4xl shadow-inner">
-              {avatar || '🦁'}
+        <div className="flex items-start sm:items-center space-x-4 sm:space-x-5 min-w-0 flex-1">
+          <div className="relative shrink-0">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-white/20 backdrop-blur-md border-2 border-white/40 flex items-center justify-center text-3xl sm:text-4xl shadow-inner select-none overflow-hidden">
+              {getAvatarDisplay(avatar)}
             </div>
             <div className="absolute -bottom-1 -right-1 bg-amber-400 text-slate-950 p-1.5 rounded-lg shadow-md border-2 border-brand-600">
               <Crown className="w-3.5 h-3.5" />
             </div>
           </div>
 
-          <div className="space-y-1">
+          <div className="space-y-1 min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-2">
               <span className="bg-brand-500/80 text-amber-300 text-[11px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full border border-amber-300/30 flex items-center gap-1">
                 <Sparkles className="w-3 h-3" />
@@ -56,11 +93,11 @@ export const StudentHeader: React.FC<StudentHeaderProps> = ({
               </span>
             </div>
 
-            <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight break-words">
               Welcome back, {displayName}!
             </h1>
 
-            <p className="text-xs sm:text-sm text-brand-100 font-medium italic max-w-xl">
+            <p className="text-xs sm:text-sm text-brand-100 font-medium italic max-w-xl line-clamp-2 sm:line-clamp-none">
               {quote}
             </p>
           </div>
