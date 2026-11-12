@@ -17,8 +17,12 @@ const LEVEL_TITLES: Record<number, string> = {
 };
 
 export const XPProgress: React.FC<XPProgressProps> = ({ xpProgress, className = '' }) => {
-  const { currentLevel, totalXp, xpInCurrentLevel, xpRequiredForNextLevel, percentage, xpRemaining } =
-    xpProgress;
+  const currentLevel = xpProgress?.currentLevel ?? 1;
+  const totalXp = xpProgress?.totalXp ?? 0;
+  const xpInCurrentLevel = xpProgress?.xpInCurrentLevel ?? 0;
+  const xpRequiredForNextLevel = xpProgress?.xpRequiredForNextLevel ?? 100;
+  const percentage = xpProgress?.percentage ?? 0;
+  const xpRemaining = xpProgress?.xpRemaining ?? Math.max(0, xpRequiredForNextLevel - xpInCurrentLevel);
   const levelTitle = LEVEL_TITLES[currentLevel] || `Grand Strategist Tier ${currentLevel}`;
 
   return (

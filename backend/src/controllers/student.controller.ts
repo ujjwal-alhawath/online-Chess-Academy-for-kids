@@ -29,7 +29,14 @@ export class StudentController {
       }
 
       // 2. Compute dynamic XP progress towards next level
-      const xpProgress = GamificationService.getXpProgress(student.xp);
+      const xpProgressRaw = GamificationService.getXpProgress(student.xp);
+      const xpProgress = {
+        ...xpProgressRaw,
+        totalXp: student.xp,
+        xpRequiredForNextLevel: xpProgressRaw.xpNeededForNextLevel,
+        percentage: xpProgressRaw.progressPercent,
+        xpRemaining: Math.max(0, xpProgressRaw.xpNeededForNextLevel - xpProgressRaw.xpInCurrentLevel),
+      };
 
       // 3. Fetch today's Daily Challenge
       const todayDate = new Date().toISOString().split('T')[0];
