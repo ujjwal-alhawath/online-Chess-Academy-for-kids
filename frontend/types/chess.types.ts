@@ -11,7 +11,7 @@ export type GameStatus =
   | 'RESIGNED'
   | 'ABANDONED';
 
-export type AiDifficulty = 'BEGINNER' | 'MEDIUM' | 'HARD';
+export type AiDifficulty = 'BEGINNER' | 'EASY' | 'MEDIUM' | 'HARD' | 'ADVANCED';
 
 export interface MoveHistoryItem {
   moveNumber: number;

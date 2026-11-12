@@ -14,9 +14,11 @@ interface DifficultyConfig {
 }
 
 const DIFFICULTY_CONFIGS: Record<AiDifficulty, DifficultyConfig> = {
-  BEGINNER: { skillLevel: 0, depth: 2, maxMoveTime: 400 },
-  MEDIUM: { skillLevel: 6, depth: 6, maxMoveTime: 900 },
-  HARD: { skillLevel: 20, depth: 12, maxMoveTime: 1800 },
+  BEGINNER: { skillLevel: 0, depth: 2, maxMoveTime: 300 },
+  EASY: { skillLevel: 3, depth: 4, maxMoveTime: 500 },
+  MEDIUM: { skillLevel: 6, depth: 6, maxMoveTime: 800 },
+  HARD: { skillLevel: 14, depth: 10, maxMoveTime: 1200 },
+  ADVANCED: { skillLevel: 20, depth: 14, maxMoveTime: 1600 },
 };
 
 export class StockfishService {
@@ -102,16 +104,17 @@ export class StockfishService {
       this.pendingResolver = resolve;
       this.pendingRejecter = reject;
 
-      // 6-second timeout safety guard: fallback if worker hangs
+      // Fast, responsive safety guard: fallback if worker hangs or drops
+      const timeoutMs = Math.max(1800, config.maxMoveTime + 800);
       this.timeoutId = setTimeout(() => {
         if (this.pendingResolver) {
-          console.warn('Stockfish timeout exceeded, using chess.js safety move.');
+          console.warn('Stockfish timeout exceeded, using fast chess.js fallback move.');
           const fallback = this.computeFallbackMove(fen);
           this.pendingResolver(fallback);
           this.pendingResolver = null;
           this.pendingRejecter = null;
         }
-      }, 6000);
+      }, timeoutMs);
 
       try {
         activeWorker.postMessage(`setoption name Skill Level value ${config.skillLevel}`);

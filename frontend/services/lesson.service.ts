@@ -54,7 +54,10 @@ export const LessonService = {
   }> {
     return apiClient(`/lessons/${lessonId}/steps/${stepNumber}`, {
       method: 'POST',
-      body: JSON.stringify(answer),
+      body: JSON.stringify({
+        stepNumber,
+        ...answer,
+      }),
     });
   },
 

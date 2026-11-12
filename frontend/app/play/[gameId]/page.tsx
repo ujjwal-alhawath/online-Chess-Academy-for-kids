@@ -45,6 +45,15 @@ export default function PlayArenaPage() {
   // Prevent duplicate AI moves with a mutex ref
   const isAiMovingRef = useRef(false);
 
+  // Helper to extract ID whether populated or raw string
+  const getPlayerId = (player: unknown): string => {
+    if (!player) return '';
+    if (typeof player === 'object' && '_id' in (player as Record<string, unknown>)) {
+      return String((player as { _id: unknown })._id);
+    }
+    return String(player);
+  };
+
   // Load authoritative game state
   const loadGame = useCallback(async () => {
     if (!gameId) return;
@@ -56,7 +65,8 @@ export default function PlayArenaPage() {
         setGame(res.game);
 
         // Determine player color and orientation
-        if (user && res.game.blackPlayerId && res.game.blackPlayerId._id === user.id) {
+        const isUserBlack = Boolean(user && getPlayerId(res.game.blackPlayerId) === user.id);
+        if (isUserBlack) {
           setBoardOrientation('black');
         } else {
           setBoardOrientation('white');
@@ -88,8 +98,9 @@ export default function PlayArenaPage() {
   }, [user, gameId, loadGame]);
 
   // Determine current player perspective
-  const isHumanWhite = Boolean(game?.whitePlayerId && game.whitePlayerId._id === user?.id);
-  const humanColor: PieceColor = isHumanWhite ? 'w' : 'b';
+  const isHumanWhite = Boolean(user && getPlayerId(game?.whitePlayerId) === user.id);
+  const isHumanBlack = Boolean(user && getPlayerId(game?.blackPlayerId) === user.id);
+  const humanColor: PieceColor = isHumanWhite ? 'w' : isHumanBlack ? 'b' : 'w';
 
   // Chess.js instance for current position
   const currentFen = game?.currentFen || 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
@@ -109,7 +120,21 @@ export default function PlayArenaPage() {
       isAiMovingRef.current = true;
 
       try {
-        const bestMove = await getAiMove(fenToAnalyze, difficulty);
+        let bestMove = await getAiMove(fenToAnalyze, difficulty);
+        if (!bestMove) {
+          // Instant safe legal move fallback using chess.js if worker dropped
+          const fallbackChess = new Chess(fenToAnalyze);
+          const legalMoves = fallbackChess.moves({ verbose: true });
+          if (legalMoves.length > 0) {
+            const picked = legalMoves[Math.floor(Math.random() * legalMoves.length)];
+            bestMove = {
+              from: picked.from,
+              to: picked.to,
+              promotion: picked.promotion as 'q' | 'r' | 'b' | 'n' | undefined,
+            };
+          }
+        }
+
         if (bestMove) {
           const moveRes = await GameService.makeMove(gameId, {
             from: bestMove.from,
@@ -133,17 +158,21 @@ export default function PlayArenaPage() {
     [gameId, getAiMove]
   );
 
+  const gameCurrentFen = game?.currentFen;
+  const gameResult = game?.result;
+  const gameAiLevel = game?.aiLevel;
+
   useEffect(() => {
-    if (isAiTurn && game && game.result === 'IN_PROGRESS' && !isAiMovingRef.current) {
-      const diff = (game.aiLevel as AiDifficulty) || 'MEDIUM';
-      // Slight brief human-like pause before AI makes move
+    if (isAiTurn && gameResult === 'IN_PROGRESS' && gameCurrentFen && !isAiMovingRef.current) {
+      const diff = (gameAiLevel as AiDifficulty) || 'MEDIUM';
+      // Brief human-like pause before AI makes move
       const timer = setTimeout(() => {
-        executeAiTurn(game.currentFen, diff);
-      }, 400);
+        executeAiTurn(gameCurrentFen, diff);
+      }, 350);
 
       return () => clearTimeout(timer);
     }
-  }, [isAiTurn, game, executeAiTurn]);
+  }, [isAiTurn, gameCurrentFen, gameResult, gameAiLevel, executeAiTurn]);
 
   // Player move submission
   const handlePlayerMove = async (move: { from: string; to: string; promotion?: 'q' | 'r' | 'b' | 'n' }) => {

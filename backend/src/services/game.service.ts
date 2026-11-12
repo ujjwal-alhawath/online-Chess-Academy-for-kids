@@ -299,6 +299,9 @@ export class GameService {
       }
     }
 
+    await game.populate('whitePlayerId', 'username email');
+    await game.populate('blackPlayerId', 'username email');
+
     return {
       game,
       move: {

@@ -16,7 +16,7 @@ export const lessonQuerySchema = z.object({
 });
 
 export const lessonStepAnswerSchema = z.object({
-  stepNumber: z.number().int().min(1),
+  stepNumber: z.number().int().min(1).optional(),
   selectedAnswer: z.string().optional(),
   interactiveMove: z
     .object({

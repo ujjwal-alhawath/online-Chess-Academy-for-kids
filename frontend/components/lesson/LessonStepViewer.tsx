@@ -62,17 +62,25 @@ export const LessonStepViewer: React.FC<LessonStepViewerProps> = ({
     setIsSubmitting(true);
     try {
       const res = await LessonService.submitStep(lessonId, step.stepNumber, {});
-      if (res.isCorrect) {
+      if (res && res.isCorrect) {
         if (isLastStep) {
           onLessonFinish();
         } else {
-          onStepComplete(res.nextStep);
+          onStepComplete(res.nextStep || step.stepNumber + 1);
         }
+        return;
       }
     } catch (err: unknown) {
-      console.error('Failed to advance step:', err);
+      console.warn('Could not sync step to server, advancing locally:', err);
     } finally {
       setIsSubmitting(false);
+    }
+
+    // Fallback: If network issue or already recorded, still advance so student is never stuck
+    if (isLastStep) {
+      onLessonFinish();
+    } else {
+      onStepComplete(step.stepNumber + 1);
     }
   };
 
