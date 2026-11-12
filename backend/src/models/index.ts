@@ -14,4 +14,5 @@ export * from './Badge';
 export * from './StudentBadge';
 export * from './DailyChallenge';
 export * from './EmotionReflection';
+export * from './XpTransaction';
 

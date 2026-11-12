@@ -18,3 +18,4 @@ export async function comparePassword(
 ): Promise<boolean> {
   return bcrypt.compare(plainText, hashed);
 }
+

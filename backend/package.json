@@ -11,7 +11,8 @@
     "lint": "eslint \"src/**/*.ts\"",
     "db:verify": "tsx src/scripts/verifyDb.ts",
     "db:seed": "tsx src/scripts/seed.ts",
-    "auth:verify": "tsx src/scripts/verifyAuth.ts"
+    "auth:verify": "tsx src/scripts/verifyAuth.ts",
+    "p4:verify": "tsx src/scripts/verifyPhase4.ts"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

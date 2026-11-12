@@ -5,6 +5,7 @@ import { config } from './config/env';
 import { connectDatabase, disconnectDatabase } from './config/database';
 import { healthRoutes } from './routes/health.routes';
 import { authRoutes } from './routes/auth.routes';
+import { studentRoutes } from './routes/student.routes';
 import { notFoundHandler } from './middleware/notFoundHandler';
 import { errorHandler } from './middleware/errorHandler';
 import { requireAuth } from './middleware/auth.middleware';
@@ -34,6 +35,7 @@ if (config.nodeEnv === 'development') {
 // Routes
 app.use('/api/health', healthRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/students', studentRoutes);
 
 // Protected Test Endpoints for Role RBAC Verification
 app.get(
