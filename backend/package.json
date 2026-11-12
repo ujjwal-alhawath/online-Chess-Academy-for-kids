@@ -8,7 +8,9 @@
     "build": "rimraf dist && tsc",
     "start": "node dist/server.js",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint \"src/**/*.ts\""
+    "lint": "eslint \"src/**/*.ts\"",
+    "db:verify": "tsx src/scripts/verifyDb.ts",
+    "db:seed": "tsx src/scripts/seed.ts"
   },
   "dependencies": {
     "cors": "^2.8.5",

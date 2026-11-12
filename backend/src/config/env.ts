@@ -12,3 +12,4 @@ export const config = {
   jwtSecret: process.env.JWT_SECRET || 'default_dev_secret_change_in_production',
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || '7d',
 };
+

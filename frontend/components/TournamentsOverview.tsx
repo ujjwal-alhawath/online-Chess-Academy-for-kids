@@ -97,3 +97,4 @@ export function TournamentsOverview() {
     </section>
   );
 }
+

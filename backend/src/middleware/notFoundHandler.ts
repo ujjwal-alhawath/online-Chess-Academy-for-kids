@@ -6,3 +6,4 @@ export function notFoundHandler(req: Request, res: Response, _next: NextFunction
     message: `Resource not found: ${req.method} ${req.originalUrl}`,
   });
 }
+
