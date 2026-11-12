@@ -63,12 +63,22 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Ensure DB connection for serverless invocations
-app.use(async (_req, _res, next) => {
+app.use(async (req, res, next) => {
+  // Allow root '/' and '/api/health' to respond immediately without waiting on DB
+  if (req.path === '/' || req.path === '/api/health') {
+    return next();
+  }
+
   try {
     await connectDatabase();
     next();
   } catch (error) {
-    next(error);
+    console.error('[Database Connection Error]', error);
+    res.status(503).json({
+      success: false,
+      message:
+        'Database connection is temporarily unavailable. Please check that MONGODB_URI is configured with a valid MongoDB Atlas connection string in your Vercel Environment Variables.',
+    });
   }
 });
 
@@ -80,15 +90,30 @@ if (config.nodeEnv === 'development') {
   });
 }
 
-// Root API Welcome & Health indicator
-app.get('/', (_req, res) => {
+// Normalize req.url if rewritten by Vercel
+app.use((req, _res, next) => {
+  const original =
+    (req.headers['x-forwarded-uri'] as string) ||
+    (req.headers['x-matched-path'] as string) ||
+    req.originalUrl;
+  if (original && original.startsWith('/api/') && !req.url.startsWith('/api/')) {
+    req.url = original;
+  }
+  next();
+});
+
+// Root API Welcome & Health indicator (handles both '/' and '/api' when rewritten)
+const welcomeHandler = (_req: express.Request, res: express.Response) => {
   res.json({
     name: 'Kids Chess Academy API',
     status: 'online',
     version: '1.0.0',
     documentation: '/api/health',
   });
-});
+};
+
+app.get('/', welcomeHandler);
+app.get('/api', welcomeHandler);
 
 // Routes
 app.use('/api/health', healthRoutes);
