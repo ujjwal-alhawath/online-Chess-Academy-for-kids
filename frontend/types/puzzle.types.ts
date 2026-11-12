@@ -91,3 +91,4 @@ export interface PuzzleListResponse {
   limit: number;
   totalPages: number;
 }
+

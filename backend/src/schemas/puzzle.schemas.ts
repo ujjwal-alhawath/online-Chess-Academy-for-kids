@@ -42,3 +42,4 @@ export const puzzleMoveSchema = z.object({
 });
 
 export type PuzzleMoveInput = z.infer<typeof puzzleMoveSchema>;
+

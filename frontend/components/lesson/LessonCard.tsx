@@ -87,3 +87,4 @@ export const LessonCard: React.FC<LessonCardProps> = ({ lesson }) => {
     </div>
   );
 };
+

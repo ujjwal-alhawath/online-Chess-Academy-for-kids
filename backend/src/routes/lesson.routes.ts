@@ -27,3 +27,4 @@ router.post(
 router.post('/:lessonId/complete', requireAuth, LessonController.completeLesson);
 
 export const lessonRoutes = router;
+

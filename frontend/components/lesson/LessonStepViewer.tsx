@@ -431,3 +431,4 @@ export const LessonStepViewer: React.FC<LessonStepViewerProps> = ({
     </div>
   );
 };
+

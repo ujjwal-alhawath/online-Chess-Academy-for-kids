@@ -30,3 +30,4 @@ router.post(
 router.post('/attempts/:attemptId/hint', requireAuth, PuzzleController.useHint);
 
 export const puzzleRoutes = router;
+

@@ -60,3 +60,4 @@ export interface LessonDetailResponse {
   currentStep: number;
   score: number;
 }
+

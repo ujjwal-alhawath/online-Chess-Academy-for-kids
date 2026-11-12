@@ -118,3 +118,4 @@ export const PuzzleCompletionModal: React.FC<PuzzleCompletionModalProps> = ({
     </div>
   );
 };
+
