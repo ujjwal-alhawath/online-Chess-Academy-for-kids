@@ -1,4 +1,4 @@
-import { Schema, model, Document, Model } from 'mongoose';
+import { Schema, model, Document, Model, Types } from 'mongoose';
 
 export type PuzzleTheme =
   | 'FORK'
@@ -6,15 +6,25 @@ export type PuzzleTheme =
   | 'SKEWER'
   | 'CHECKMATE'
   | 'DEFLECTION'
-  | 'PATTERN_RECOGNITION';
+  | 'PATTERN_RECOGNITION'
+  | 'DISCOVERED_ATTACK'
+  | 'DOUBLE_ATTACK'
+  | 'MATE_IN_ONE'
+  | 'MATE_IN_TWO'
+  | 'TACTICAL';
 
 export interface IPuzzle extends Document {
   title: string;
+  description?: string;
   fen: string;
   solutionMoves: string[];
   theme: PuzzleTheme;
   difficulty: number;
   hint: string;
+  hints?: string[];
+  explanation?: string;
+  lessonId?: Types.ObjectId | null;
+  order?: number;
   xpReward: number;
   isPublished: boolean;
   createdAt: Date;
@@ -29,6 +39,10 @@ const puzzleSchema = new Schema<IPuzzle>(
       trim: true,
       minlength: [3, 'Title must be at least 3 characters'],
       maxlength: [100, 'Title cannot exceed 100 characters'],
+    },
+    description: {
+      type: String,
+      trim: true,
     },
     fen: {
       type: String,
@@ -53,6 +67,11 @@ const puzzleSchema = new Schema<IPuzzle>(
           'CHECKMATE',
           'DEFLECTION',
           'PATTERN_RECOGNITION',
+          'DISCOVERED_ATTACK',
+          'DOUBLE_ATTACK',
+          'MATE_IN_ONE',
+          'MATE_IN_TWO',
+          'TACTICAL',
         ],
         message: '{VALUE} is not a valid puzzle theme',
       },
@@ -71,6 +90,21 @@ const puzzleSchema = new Schema<IPuzzle>(
       required: [true, 'Hint is required for young players'],
       trim: true,
       maxlength: [300, 'Hint cannot exceed 300 characters'],
+    },
+    hints: [{ type: String, trim: true }],
+    explanation: {
+      type: String,
+      trim: true,
+    },
+    lessonId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Lesson',
+      default: null,
+      index: true,
+    },
+    order: {
+      type: Number,
+      default: 0,
     },
     xpReward: {
       type: Number,

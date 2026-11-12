@@ -29,24 +29,27 @@ export function Navbar() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-600">
-            <a href="#features" className="hover:text-brand-600 transition-colors">
+          <nav className="hidden md:flex items-center gap-7 text-sm font-semibold text-slate-600">
+            <Link href="/learn" className="hover:text-brand-600 transition-colors">
+              Curriculum
+            </Link>
+            <Link href="/puzzles" className="hover:text-brand-600 transition-colors">
+              Puzzles
+            </Link>
+            <Link href="/play" className="hover:text-brand-600 transition-colors">
+              Play Chess
+            </Link>
+            <a href="/#features" className="hover:text-brand-600 transition-colors">
               Features
             </a>
-            <a href="#how-it-works" className="hover:text-brand-600 transition-colors">
+            <a href="/#how-it-works" className="hover:text-brand-600 transition-colors">
               How It Works
             </a>
-            <a href="#learning" className="hover:text-brand-600 transition-colors">
+            <a href="/#learning" className="hover:text-brand-600 transition-colors">
               Learning
             </a>
-            <a href="#practice" className="hover:text-brand-600 transition-colors">
-              Practice
-            </a>
-            <a href="#tournaments" className="hover:text-brand-600 transition-colors">
+            <a href="/#tournaments" className="hover:text-brand-600 transition-colors">
               Tournaments
-            </a>
-            <a href="#progress" className="hover:text-brand-600 transition-colors">
-              Progress
             </a>
           </nav>
 
@@ -97,15 +100,36 @@ export function Navbar() {
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div className="md:hidden border-b border-slate-200 bg-white px-4 pt-2 pb-6 space-y-3">
+          <Link
+            href="/learn"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block px-3 py-2 rounded-lg text-base font-bold text-brand-600 hover:bg-brand-50"
+          >
+            Curriculum
+          </Link>
+          <Link
+            href="/puzzles"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block px-3 py-2 rounded-lg text-base font-bold text-emerald-600 hover:bg-emerald-50"
+          >
+            Tactical Puzzles
+          </Link>
+          <Link
+            href="/play"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block px-3 py-2 rounded-lg text-base font-bold text-amber-600 hover:bg-amber-50"
+          >
+            Play Chess
+          </Link>
           <a
-            href="#features"
+            href="/#features"
             onClick={() => setMobileMenuOpen(false)}
             className="block px-3 py-2 rounded-lg text-base font-semibold text-slate-700 hover:bg-slate-50"
           >
             Features
           </a>
           <a
-            href="#how-it-works"
+            href="/#how-it-works"
             onClick={() => setMobileMenuOpen(false)}
             className="block px-3 py-2 rounded-lg text-base font-semibold text-slate-700 hover:bg-slate-50"
           >

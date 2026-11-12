@@ -1,8 +1,12 @@
 import { Schema, model, Document, Model, Types } from 'mongoose';
 
+export type LessonProgressStatus = 'NOT_STARTED' | 'IN_PROGRESS' | 'COMPLETED';
+
 export interface IStudentLessonProgress extends Document {
   studentId: Types.ObjectId;
   lessonId: Types.ObjectId;
+  status: LessonProgressStatus;
+  currentStep: number;
   isCompleted: boolean;
   score: number;
   completedAt: Date | null;
@@ -23,6 +27,17 @@ const studentLessonProgressSchema = new Schema<IStudentLessonProgress>(
       ref: 'Lesson',
       required: [true, 'Lesson reference is required'],
       index: true,
+    },
+    status: {
+      type: String,
+      enum: ['NOT_STARTED', 'IN_PROGRESS', 'COMPLETED'],
+      default: 'NOT_STARTED',
+      index: true,
+    },
+    currentStep: {
+      type: Number,
+      default: 1,
+      min: 1,
     },
     isCompleted: {
       type: Boolean,

@@ -160,7 +160,23 @@ export default function StudentDashboardPage() {
             </div>
           </Link>
 
-          <div className="flex items-center gap-3 sm:gap-4">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <Link
+              href="/learn"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-brand-700 bg-brand-50 hover:bg-brand-100 transition-colors"
+            >
+              <GraduationCap className="w-3.5 h-3.5" />
+              <span>Curriculum</span>
+            </Link>
+
+            <Link
+              href="/puzzles"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 transition-colors"
+            >
+              <Puzzle className="w-3.5 h-3.5" />
+              <span>Tactics</span>
+            </Link>
+
             <Link
               href="/play"
               className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-black bg-amber-400 hover:bg-amber-300 text-slate-950 shadow-xs transition-colors"
@@ -265,28 +281,32 @@ export default function StudentDashboardPage() {
                     color="brand"
                     badge="Rapid"
                   />
-                  <StatCard
-                    title="Games Played"
-                    value={dashboardData.student.stats.gamesPlayed}
-                    subtitle={
-                      dashboardData.student.stats.gamesPlayed > 0
-                        ? `${Math.round(
-                            (dashboardData.student.stats.gamesWon /
-                              dashboardData.student.stats.gamesPlayed) *
-                              100
-                          )}% Win Rate`
-                        : '0 Wins • Ready to play'
-                    }
-                    icon={Swords}
-                    color="amber"
-                  />
-                  <StatCard
-                    title="Puzzles Solved"
-                    value={dashboardData.student.stats.puzzlesSolved}
-                    subtitle="+25 XP per tactic"
-                    icon={Puzzle}
-                    color="emerald"
-                  />
+                  <Link href="/play" className="block transition-transform hover:scale-[1.02]">
+                    <StatCard
+                      title="Games Played"
+                      value={dashboardData.student.stats.gamesPlayed}
+                      subtitle={
+                        dashboardData.student.stats.gamesPlayed > 0
+                          ? `${Math.round(
+                              (dashboardData.student.stats.gamesWon /
+                                dashboardData.student.stats.gamesPlayed) *
+                                100
+                            )}% Win Rate`
+                          : '0 Wins • Ready to play'
+                      }
+                      icon={Swords}
+                      color="amber"
+                    />
+                  </Link>
+                  <Link href="/puzzles" className="block transition-transform hover:scale-[1.02]">
+                    <StatCard
+                      title="Puzzles Solved"
+                      value={dashboardData.student.stats.puzzlesSolved}
+                      subtitle="+25 XP per tactic"
+                      icon={Puzzle}
+                      color="emerald"
+                    />
+                  </Link>
                   <StatCard
                     title="Active Streak"
                     value={`${dashboardData.student.streak.current} Days`}
